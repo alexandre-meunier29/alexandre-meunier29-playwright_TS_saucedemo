@@ -1,6 +1,6 @@
 # Playwright TS Saucedemo Login Test
 
-This project contains a simple automated test written in **TypeScript** using **Playwright** for testing the login functionality of the **SauceDemo** application.
+This project contains automated tests written in **TypeScript** using **Playwright** for testing functionalities of the **SauceDemo** application.
 
 ## Prerequisites
 
