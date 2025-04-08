@@ -3,7 +3,7 @@ const {test, expect} =require('@playwright/test');
 
 
 
-test.only("user adds a product to basket and go through the full checkout process", async({browser,page})=>
+test("user adds a product to basket and go through the full checkout process", async({browser,page})=>
     {
         await page.goto("https://www.saucedemo.com/");
         await page.locator("#user-name").fill("standard_user");
