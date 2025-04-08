@@ -1,17 +1,7 @@
 // @ts-check
 import { chromium, defineConfig, devices } from '@playwright/test';
+import { trace } from 'console';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
 const config = ({
   testDir: './tests',
   expect : {
@@ -20,7 +10,11 @@ const config = ({
   reporter: 'html',
 
   use: {
-    browserName : 'chromium'
+    browserName : 'chromium',
+    headless : false,
+    screenshot : 'off',
+    trace : 'retain-on-failure'
+
 
   },
 
