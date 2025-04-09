@@ -20,7 +20,7 @@ test("Sort the product listing by low to high prices", async({browser,page})=>
 
     })
 
-    test("Look for product 'Sauce Labs Onesie' and add it to basket", async({ browser, page }) => {
+    test("Look for product 'Sauce Labs Onesie' and add it to basket (loop method)", async({ browser, page }) => {
         await page.goto("https://www.saucedemo.com/");
         await page.locator("#user-name").fill("standard_user");
         await page.locator("#password").fill("secret_sauce");
@@ -46,6 +46,23 @@ test("Sort the product listing by low to high prices", async({browser,page})=>
         const isProductInCart = await page.locator(".cart_item_label:has-text('Sauce Labs Onesie')").isVisible();
         expect(isProductInCart).toBeTruthy();
     });
+
+
+
+    test.only("Look for product 'Sauce Labs Onesie' and add it to basket(filter method)", async({ browser, page }) => {
+        await page.goto("https://www.saucedemo.com/");
+        await page.locator("#user-name").fill("standard_user");
+        await page.locator("#password").fill("secret_sauce");
+        await page.locator("#login-button").click();
+        await page.locator(".inventory_list").waitFor({state: 'visible'});
+        await page.locator(".inventory_item").filter({hasText:"Sauce Labs Onesie"}).getByRole("button").click();
+        await page.locator(".shopping_cart_badge").waitFor();
+        await page.locator(".shopping_cart_link").click();
+        await page.locator(".cart_contents_container").waitFor();
+        const isProductInCart = await page.locator(".cart_item_label:has-text('Sauce Labs Onesie')").isVisible();
+        expect(isProductInCart).toBeTruthy();
+    });
+
 
 
 
