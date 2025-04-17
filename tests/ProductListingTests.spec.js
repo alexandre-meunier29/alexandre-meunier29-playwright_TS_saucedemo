@@ -1,41 +1,44 @@
-const {test, expect} =require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pageobjects/LoginPage')
+const { ProductListingPage } = require('../pageobjects/ProductListingPage');
+const { CartPage } = require('../pageobjects/CartPage');
 
 
 
 
-test("Sort the product listing by low to high prices", async({browser,page})=>
-    {
-        await page.goto("https://www.saucedemo.com/");
-        await page.locator("#user-name").fill("standard_user");
-        await page.locator("#password").fill("secret_sauce");
-        await page.locator("#login-button").click();
-        await page.locator("select.product_sort_container").selectOption("lohi");
-        const priceElements = await page.locator(".inventory_item_price").allTextContents();
-        const prices = priceElements.map(price => parseFloat(price.replace('$', '').trim()));
-        for (let i = 0; i < prices.length - 1; i++) {
-            expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
-        }
-        console.log(prices);
+test("Sort the product listing by low to high prices", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const productListingPage = new ProductListingPage(page);
+    const username = "standard_user";
+    const password = "secret_sauce";
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username, password);
+    await productListingPage.sortByLowToHigh();
+    await productListingPage.assertPricesInAscendingOrder();
 
 
-    })
+})
 
 
 
 
-    test("Look for product 'Sauce Labs Onesie' and add it to basket(filter method)", async({ browser, page }) => {
-        await page.goto("https://www.saucedemo.com/");
-        await page.locator("#user-name").fill("standard_user");
-        await page.locator("#password").fill("secret_sauce");
-        await page.locator("#login-button").click();
-        await page.locator(".inventory_list").waitFor({state: 'visible'});
-        await page.locator(".inventory_item").filter({hasText:"Sauce Labs Onesie"}).getByRole("button").click();
-        await page.locator(".shopping_cart_badge").waitFor();
-        await page.locator(".shopping_cart_link").click();
-        await page.locator(".cart_contents_container").waitFor();
-        const isProductInCart = await page.locator(".cart_item_label:has-text('Sauce Labs Onesie')").isVisible();
-        expect(isProductInCart).toBeTruthy();
-    });
+test("Look for product 'Sauce Labs Onesie' and add it to basket(filter method)", async ({ browser, page }) => {
+
+    const loginPage = new LoginPage(page);
+    const productListingPage = new ProductListingPage(page);
+    const cartPage = new CartPage(page);
+    const username = "standard_user";
+    const password = "secret_sauce";
+    const productname = "Sauce Labs Onesie";
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username, password);
+    await productListingPage.addNamedProductToCart(productname);
+    await productListingPage.waitForCartBadge();
+    await productListingPage.goToCart();
+    await cartPage.assertProductIsInCart(productname);
+});
 
 
 

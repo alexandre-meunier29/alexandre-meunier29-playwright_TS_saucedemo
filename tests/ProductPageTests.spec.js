@@ -1,17 +1,24 @@
-const {test, expect} =require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pageobjects/LoginPage')
+const { ProductListingPage } = require('../pageobjects/ProductListingPage');
+const { ProductDetailPage } = require('../pageobjects/ProductDetailPage');
 
 
 
 
-test("Add the first product from the list to basket from product page", async({browser,page})=>
-    {
-        await page.goto("https://www.saucedemo.com/");
-        await page.locator("#user-name").fill("standard_user");
-        await page.locator("#password").fill("secret_sauce");
-        await page.locator("#login-button").click();
-        await page.locator(".inventory_item_name").nth(0).click();
-        await page.locator("#add-to-cart").click();
-        await expect (page.locator(".shopping_cart_badge")).toContainText("1");
-        
+test("Add the first product from the list to basket from product page", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const productListingPage = new ProductListingPage(page);
+    const productDetailPage = new ProductDetailPage(page);
+    const username = "standard_user";
+    const password = "secret_sauce";
 
-    })
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username, password);
+    await productListingPage.clickOnFirstProductTitle();
+    await productDetailPage.addToCart();
+    await productDetailPage.assertProductIsInCart();
+
+
+})
