@@ -1,22 +1,20 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../pageobjects/LoginPage')
-const { ProductListingPage } = require('../pageobjects/ProductListingPage');
-const { ProductDetailPage } = require('../pageobjects/ProductDetailPage');
+const { POManager } = require('../pageobjects/POManager');
 
 
 
 
 test("Add the first product from the list to basket from product page", async ({ browser, page }) => {
-    const loginPage = new LoginPage(page);
-    const productListingPage = new ProductListingPage(page);
-    const productDetailPage = new ProductDetailPage(page);
+    const poManager = new POManager(page);
     const username = "standard_user";
     const password = "secret_sauce";
 
-
+    const loginPage = poManager.getloginPage();
     await loginPage.goToLoginPage();
     await loginPage.login(username, password);
+    const productListingPage = poManager.getProductListingPage();
     await productListingPage.clickOnFirstProductTitle();
+    const productDetailPage = poManager.getProductDetailPage();
     await productDetailPage.addToCart();
     await productDetailPage.assertProductIsInCart();
 
