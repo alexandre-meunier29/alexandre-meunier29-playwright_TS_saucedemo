@@ -15,6 +15,7 @@ class ProductListingPage {
         this.minicartBadge = page.locator(".shopping_cart_badge");
         this.minicartBtn = page.locator(".shopping_cart_link");
         this.firstProductTitle = page.locator(".inventory_item_name").nth(0);
+        this.firstListedProductAddToCartBtn = page.locator(".btn_primary");
 
     }
 
@@ -47,18 +48,20 @@ class ProductListingPage {
         await this.inventoryItem.filter({ hasText: productname }).getByRole("button").click();
     }
 
-    async waitForCartBadge(){
+    async waitForCartBadge() {
         await this.minicartBadge.waitFor();
     }
 
-    async goToCart(){
-        this.minicartBtn.click();
+    async goToCart() {
+        await this.minicartBtn.click();
     }
 
-    async clickOnFirstProductTitle(){
-        this.firstProductTitle.click();
+    async clickOnFirstProductTitle() {
+        await this.firstProductTitle.click();
+    }
 
-
+    async addFirstListedproductToCart() {
+        await this.firstListedProductAddToCartBtn.nth(0).click();
     }
 
 }
