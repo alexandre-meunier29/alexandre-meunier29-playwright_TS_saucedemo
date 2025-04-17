@@ -3,7 +3,7 @@ const {test, expect} =require('@playwright/test');
 
 
 
-test.only("Pick my birth date in calendar", async({browser,page})=>{
+test("Pick my birth date in calendar", async({browser,page})=>{
 
     const year = "1989";
     const month = "12";

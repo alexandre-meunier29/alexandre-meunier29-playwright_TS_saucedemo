@@ -1,48 +1,56 @@
-const {test, expect} =require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const {LoginPage} = require('../pageobjects/LoginPage')
+const {ProductListingPage} = require('../pageobjects/ProductListingPage')
 
 
+test("Successful login test", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const productListingPage = new ProductListingPage(page);
+    const username = "standard_user";
+    const password = "secret_sauce";
+    const url = "https://www.saucedemo.com/inventory.html";
 
-test("Successful login test", async({browser,page})=>
-{
-await page.goto("https://www.saucedemo.com/");
-console.log(await page.title());
-await page.locator("#user-name").fill("standard_user");
-await page.locator("#password").fill("secret_sauce");
-await page.locator("#login-button").click();
-await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
-
-
-})
-
-test("Unsuccessful login with invalid credentials", async({browser,page})=>
-{
-    await page.goto("https://www.saucedemo.com/");
-    await page.locator("#user-name").fill("dummy_user");
-    await page.locator("#password").fill("dummy_sauce");
-    await page.locator("#login-button").click();
-    await expect (page.locator(".error-message-container")).toContainText("Username and password do not match any user");
+    await loginPage.goToLoginPage();
+    await loginPage.login(username,password);
+    await productListingPage.assertUserLoggedIn(url);
+    
 
 
 })
 
-test("Unsuccessful login with locked user", async({browser,page})=>
-{
-    await page.goto("https://www.saucedemo.com/");
-    await page.locator("#user-name").fill("locked_out_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-    await expect (page.locator(".error-message-container")).toContainText("this user has been locked out");
+test("Unsuccessful login with invalid credentials", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const username = "dummy_user";
+    const password = "dummy_sauce";
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username,password);
+    await loginPage.assertLoginFailedErrorMsg();
+
+
 })
 
-test("Logout", async({browser,page})=>
-{
-    await page.goto("https://www.saucedemo.com/");
-    await page.locator("#user-name").fill("standard_user");
-    await page.locator("#password").fill("secret_sauce");
-    await page.locator("#login-button").click();
-    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
-    await page.locator("#react-burger-menu-btn").click();
-    await page.locator("#logout_sidebar_link").click();
-    await expect(page.locator("#login-button")).toBeVisible();
+test("Unsuccessful login with locked user", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const username = "locked_out_user";
+    const password = "secret_sauce";
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username,password);
+    await loginPage.assertLoginFailedUserlockedErrorMsg();
+})
+
+test("Logout", async ({ browser, page }) => {
+    const loginPage = new LoginPage(page);
+    const productListingPage = new ProductListingPage(page);
+    const username = "standard_user";
+    const password = "secret_sauce";
+    const url = "https://www.saucedemo.com/inventory.html";
+
+    await loginPage.goToLoginPage();
+    await loginPage.login(username,password);
+    await productListingPage.assertUserLoggedIn(url);
+    await productListingPage.logout();
+    await loginPage.assertLoginButtonVisible();
 
 })
