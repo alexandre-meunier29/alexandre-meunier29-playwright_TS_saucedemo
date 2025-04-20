@@ -8,6 +8,7 @@ class CheckoutStep1Page {
         this.lastNameField = page.locator("#last-name");
         this.postcodeField = page.locator("#postal-code");
         this.continueBtn = page.locator("#continue");
+        this.errorMsgContainer = page.locator(".error-message-container");
 
 
     }
@@ -22,6 +23,14 @@ class CheckoutStep1Page {
     async proceedToCheckoutStep2() {
         await this.continueBtn.click();
 
+    }
+
+    async assertErrorMessage(){
+        await expect(this.errorMsgContainer).toContainText("Error: First Name is required")
+    }
+
+    async assertUrlStep1(url) {
+        await expect(this.page).toHaveURL(url);
     }
 
 

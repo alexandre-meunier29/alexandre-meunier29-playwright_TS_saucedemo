@@ -7,6 +7,7 @@ class ProductDetailPage {
         this.page = page;
         this.addToCartBtn = page.locator("#add-to-cart");
         this.minicartBadge = page.locator(".shopping_cart_badge");
+        this.productItemPrice = page.locator(".inventory_details_price");
         
 
     }
@@ -18,6 +19,12 @@ class ProductDetailPage {
     async assertProductIsInCart(){
         await expect(this.minicartBadge).toContainText("1");
     }
+
+    async assertProductPrice(expectedPrice) {
+        const actualPriceText = await this.productItemPrice.textContent();
+        const actualPrice = parseFloat(actualPriceText.replace('$', '').trim());
+        expect(actualPrice).toEqual(expectedPrice);
+      }
 
 
 }

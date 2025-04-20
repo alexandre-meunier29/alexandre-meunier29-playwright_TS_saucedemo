@@ -15,7 +15,8 @@ class ProductListingPage {
         this.minicartBadge = page.locator(".shopping_cart_badge");
         this.minicartBtn = page.locator(".shopping_cart_link");
         this.firstProductTitle = page.locator(".inventory_item_name").nth(0);
-        this.firstListedProductAddToCartBtn = page.locator(".btn_primary");
+        this.AddToCartBtn = page.locator(".btn_primary");
+        this.productPriceContainer = page.locator(".inventory_item_price");
 
     }
 
@@ -61,7 +62,19 @@ class ProductListingPage {
     }
 
     async addFirstListedproductToCart() {
-        await this.firstListedProductAddToCartBtn.nth(0).click();
+        await this.AddToCartBtn.nth(0).click();
+    }
+
+    async addLastListedproductToCart() {
+        const addToCartBtnCount = await this.AddToCartBtn.count();
+        await this.AddToCartBtn.nth(addToCartBtnCount - 1).click();
+
+    }
+
+    async getFirstListedProductPrice() {
+        const priceText = await this.priceElements.nth(0).textContent();
+        return parseFloat(priceText.replace('$', '').trim());
+
     }
 
 }

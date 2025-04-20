@@ -4,16 +4,26 @@ import { trace } from 'console';
 
 const config = ({
   testDir: './tests',
-  expect : {
-    timeout: 20*1000,
+  retries: 1,
+  workers: 1,
+  expect: {
+    timeout: 20 * 1000,
   },
-  reporter: 'html',
+
+  reporter: [
+    ['html'],
+    ['allure-playwright', {
+      detail: true,
+      outputFolder: 'allure-results',
+      suiteTitle: false
+    }]
+  ],
 
   use: {
-    browserName : 'chromium',
-    headless : false,
-    screenshot : 'off',
-    trace : 'retain-on-failure'
+    browserName: 'chromium',
+    headless: false,
+    screenshot: 'off',
+    trace: 'retain-on-failure'
 
 
   },

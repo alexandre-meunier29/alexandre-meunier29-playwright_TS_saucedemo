@@ -2,13 +2,21 @@
   "name": "playwrightsaucedemo",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "allure:generate": "allure generate ./allure-results --clean",
+    "allure:open": "allure open ./allure-report",
+    "allure:report": "npm run allure:generate && npm run allure:open"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.51.1",
-    "@types/node": "^22.14.0"
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.14.0",
+    "allure": "^3.0.0-beta.11",
+    "allure-commandline": "^2.33.0",
+    "allure-playwright": "^3.2.1"
   }
 }
