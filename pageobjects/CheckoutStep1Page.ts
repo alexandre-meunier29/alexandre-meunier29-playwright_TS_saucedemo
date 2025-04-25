@@ -1,8 +1,15 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
-class CheckoutStep1Page {
+export class CheckoutStep1Page {
 
-    constructor(page) {
+    page : Page;
+    firstNameField : Locator;
+    lastNameField : Locator;
+    postcodeField : Locator;
+    continueBtn : Locator;
+    errorMsgContainer : Locator;
+
+    constructor(page:Page) {
         this.page = page;
         this.firstNameField = page.locator("#first-name");
         this.lastNameField = page.locator("#last-name");
@@ -13,7 +20,7 @@ class CheckoutStep1Page {
 
     }
 
-    async fillCheckoutFields(firstname, lastname, postcode) {
+    async fillCheckoutFields(firstname:string, lastname:string, postcode:string) {
 
         await this.firstNameField.fill(firstname);
         await this.lastNameField.fill(lastname);
@@ -29,11 +36,10 @@ class CheckoutStep1Page {
         await expect(this.errorMsgContainer).toContainText("Error: First Name is required")
     }
 
-    async assertUrlStep1(url) {
+    async assertUrlStep1(url:string) {
         await expect(this.page).toHaveURL(url);
     }
 
 
 
 }
-module.exports = { CheckoutStep1Page };

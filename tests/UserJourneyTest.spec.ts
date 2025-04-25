@@ -1,10 +1,10 @@
-const { test, expect } = require('@playwright/test');
-const { POManager } = require('../pageobjects/POManager');
-const dataset = JSON.parse(JSON.stringify(require("../utils/UserData.json")));
+import { test, expect } from '@playwright/test';
+import { POManager } from '../pageobjects/POManager';
+import dataset from '../utils/UserData.json';
 
 
 
-test("user adds a product to basket and go through the full checkout process", async ({ browser, page }) => {
+test("user adds a product to basket and go through the full checkout process", async ({ page }) => {
     const poManager = new POManager(page);
 
     const loginPage = poManager.getloginPage();
@@ -25,7 +25,7 @@ test("user adds a product to basket and go through the full checkout process", a
 
 })
 
-test("item price consistency across user journey", async ({ browser, page }) => {
+test("item price consistency across user journey", async ({ page }) => {
     const poManager = new POManager(page);
 
     const loginPage = poManager.getloginPage();

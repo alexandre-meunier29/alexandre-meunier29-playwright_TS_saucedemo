@@ -1,8 +1,13 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
-class CheckoutStep2Page {
+export class CheckoutStep2Page {
 
-    constructor(page) {
+  page : Page;
+  finishBtn : Locator;
+  productItemPrice : Locator;
+  subtotalText : Locator;
+
+    constructor(page : Page) {
         this.page = page;
         this.finishBtn = page.locator("#finish");
         this.productItemPrice = page.locator(".inventory_item_price");
@@ -16,14 +21,21 @@ class CheckoutStep2Page {
 
     }
 
-    async assertProductPrice(expectedPrice) {
+    async assertProductPrice(expectedPrice:number) {
         const actualPriceText = await this.productItemPrice.textContent();
+        if (actualPriceText === null) {
+          throw new Error("Failed to get product price text - element not found or has no text");
+      }
         const actualPrice = parseFloat(actualPriceText.replace('$', '').trim());
         expect(actualPrice).toEqual(expectedPrice);
       }
 
-      async assertSubtotalPrice(expectedPrice){
+      async assertSubtotalPrice(expectedPrice: number){
         const actualPriceText = await this.subtotalText.textContent();
+
+        if (actualPriceText === null) {
+          throw new Error("Failed to get subtotal price text - element not found or has no text");
+        }
         
         const priceMatch = actualPriceText.match(/\$(\d+\.\d+)/);
         
@@ -36,4 +48,3 @@ class CheckoutStep2Page {
       }
 
 }
-module.exports = { CheckoutStep2Page };

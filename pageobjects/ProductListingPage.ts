@@ -1,10 +1,25 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
 
 
-class ProductListingPage {
 
-    constructor(page) {
+ export class ProductListingPage {
+
+    page : Page;
+    burgerMenu : Locator;
+    logoutButton : Locator;
+    sortByLowToHighOption : Locator;
+    priceElements : Locator;
+    inventoryList : Locator;
+    inventoryItem : Locator;
+    minicartBadge : Locator;
+    minicartBtn : Locator;
+    firstProductTitle : Locator;
+    AddToCartBtn : Locator;
+    productPriceContainer : Locator;
+
+
+    constructor(page:Page) {
         this.page = page;
         this.burgerMenu = page.locator("#react-burger-menu-btn");
         this.logoutButton = page.locator("#logout_sidebar_link");
@@ -26,7 +41,7 @@ class ProductListingPage {
         await this.logoutButton.click();
     }
 
-    async assertUserLoggedIn(url) {
+    async assertUserLoggedIn(url:string) {
         await expect(this.page).toHaveURL(url);
     }
 
@@ -44,7 +59,7 @@ class ProductListingPage {
         console.log(prices);
     }
 
-    async addNamedProductToCart(productname) {
+    async addNamedProductToCart(productname:string) {
         await this.inventoryList.waitFor({ state: 'visible' });
         await this.inventoryItem.filter({ hasText: productname }).getByRole("button").click();
     }
@@ -73,9 +88,13 @@ class ProductListingPage {
 
     async getFirstListedProductPrice() {
         const priceText = await this.priceElements.nth(0).textContent();
+
+        if (priceText === null) {
+            throw new Error("Failed to get product price text - element not found or has no text");
+        }
+
         return parseFloat(priceText.replace('$', '').trim());
 
     }
 
 }
-module.exports = { ProductListingPage };

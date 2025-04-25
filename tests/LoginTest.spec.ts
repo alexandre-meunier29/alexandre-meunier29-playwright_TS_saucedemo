@@ -1,9 +1,9 @@
-const { test, expect } = require('@playwright/test');
-const { POManager } = require('../pageobjects/POManager');
-const dataset = JSON.parse(JSON.stringify(require("../utils/UserData.json")));
+import { test, expect } from '@playwright/test';
+import { POManager } from '../pageobjects/POManager';
+import dataset from '../utils/UserData.json';
 
 
-test("Successful login test", async ({ browser, page }) => {
+test("Successful login test", async ({ page }) => {
     const poManager = new POManager(page);
     const url = "https://www.saucedemo.com/inventory.html";
 
@@ -17,7 +17,7 @@ test("Successful login test", async ({ browser, page }) => {
 
 })
 
-test("Unsuccessful login with invalid credentials", async ({ browser, page }) => {
+test("Unsuccessful login with invalid credentials", async ({ page }) => {
     const poManager = new POManager(page);
     const username = "dummy_user";
     const password = "dummy_sauce";
@@ -31,7 +31,7 @@ test("Unsuccessful login with invalid credentials", async ({ browser, page }) =>
 
 })
 
-test("Unsuccessful login with locked user", async ({ browser, page }) => {
+test("Unsuccessful login with locked user", async ({ page }) => {
     const poManager = new POManager(page);
     const username = "locked_out_user";
 
@@ -41,7 +41,7 @@ test("Unsuccessful login with locked user", async ({ browser, page }) => {
     await loginPage.assertLoginFailedUserlockedErrorMsg();
 })
 
-test("Logout", async ({ browser, page }) => {
+test("Logout", async ({ page }) => {
     const poManager = new POManager(page);
     const url = "https://www.saucedemo.com/inventory.html";
 

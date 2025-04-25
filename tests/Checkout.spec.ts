@@ -1,10 +1,10 @@
-const { test, expect } = require('@playwright/test');
-const { POManager } = require('../pageobjects/POManager');
-const dataset = JSON.parse(JSON.stringify(require("../utils/UserData.json")));
+import { test, expect } from '@playwright/test';
+import { POManager } from '../pageobjects/POManager';
+import dataset from '../utils/UserData.json';
 
 
 
-test("user gets error message on checkout step 1 by missing to fill user data fileds", async ({ browser, page }) => {
+test("user gets error message on checkout step 1 by missing to fill user data fileds", async ({ page }) => {
     const poManager = new POManager(page);
     const url = "https://www.saucedemo.com/checkout-step-one.html"
 

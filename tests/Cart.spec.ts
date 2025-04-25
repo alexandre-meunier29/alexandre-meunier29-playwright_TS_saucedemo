@@ -1,10 +1,10 @@
-const { test, expect } = require('@playwright/test');
-const { POManager } = require('../pageobjects/POManager');
-const dataset = JSON.parse(JSON.stringify(require("../utils/UserData.json")));
+import { test, expect } from '@playwright/test';
+import { POManager } from '../pageobjects/POManager';
+import dataset from '../utils/UserData.json';
 
 
 
-test("user removes all products from cart", async ({ browser, page }) => {
+test("user removes all products from cart", async ({ page }) => {
     const poManager = new POManager(page);
 
     const loginPage = poManager.getloginPage();

@@ -1,8 +1,12 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
-class SuccessPage {
 
-    constructor(page)
+export class SuccessPage {
+
+    page : Page;
+    headerTitle : Locator;
+
+    constructor(page:Page)
     {
         this.page = page;
         this.headerTitle = page.locator(".complete-header");
@@ -16,4 +20,3 @@ class SuccessPage {
 
 
 }
-module.exports = {SuccessPage};

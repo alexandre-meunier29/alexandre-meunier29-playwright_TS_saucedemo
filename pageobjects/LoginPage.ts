@@ -1,8 +1,14 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
-class LoginPage {
+export class LoginPage {
 
-    constructor(page)
+    page : Page;
+    loginButton : Locator;
+    usernameField : Locator;
+    passwordField : Locator;
+    errorMsgContainer : Locator;
+
+    constructor(page: Page)
     {
         this.page = page;
         this.loginButton = page.locator("#login-button");
@@ -18,7 +24,7 @@ class LoginPage {
 
     }
 
-    async login(username,password)
+    async login(username : string, password : string)
     {
     await this.usernameField.fill(username);
     await this.passwordField.fill(password);
@@ -39,4 +45,3 @@ class LoginPage {
     }
 
 }
-module.exports = {LoginPage};

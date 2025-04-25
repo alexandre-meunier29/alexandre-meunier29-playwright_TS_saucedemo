@@ -1,8 +1,17 @@
-const { expect } = require('@playwright/test');
+import {expect, Locator, Page} from '@playwright/test';
 
-class CartPage {
+export class CartPage {
 
-    constructor(page) {
+    page : Page;
+    cartContentContainer : Locator;
+    productContainer : Locator;
+    checkoutBtn : Locator;
+    removeProductBtn : Locator;
+    productItemPrice : Locator;
+
+
+
+    constructor(page:Page) {
         this.page = page;
         this.cartContentContainer = page.locator(".cart_contents_container");
         this.productContainer = page.locator(".cart_item");
@@ -12,7 +21,7 @@ class CartPage {
 
     }
 
-    async assertProductIsInCart(productname) {
+    async assertProductIsInCart(productname:string) {
         await this.cartContentContainer.waitFor();
         const isProductInCart = await this.page.locator(`.cart_item_label:has-text("${productname}")`).isVisible();
         expect(isProductInCart).toBeTruthy();
@@ -40,12 +49,16 @@ class CartPage {
 
     }
 
-    async assertProductPrice(expectedPrice) {
+    async assertProductPrice(expectedPrice:number) {
         const actualPriceText = await this.productItemPrice.first().textContent();
+
+        if (actualPriceText === null) {
+            throw new Error("Failed to get product price text - element not found or has no text");
+        }
+
         const actualPrice = parseFloat(actualPriceText.replace('$', '').trim());
         expect(actualPrice).toEqual(expectedPrice);
       }
 
 
 }
-module.exports = { CartPage };
